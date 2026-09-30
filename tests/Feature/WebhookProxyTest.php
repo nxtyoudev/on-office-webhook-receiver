@@ -33,12 +33,12 @@ class WebhookProxyTest extends TestCase
         $body = '{"event":"order.created"}';
         $signature = hash_hmac('sha256', $body, 's3cr3t');
 
-        $response = $this->postJson("/webhooks/{$endpoint->slug}", json_decode($body, true), [
+        $response = $this->postJson("/api/webhooks/{$endpoint->slug}", json_decode($body, true), [
             'X-Webhook-Signature' => "sha256={$signature}",
         ]);
 
         // postJson re-encodes the body; send raw instead for exact HMAC.
-        $response = $this->call('POST', "/webhooks/{$endpoint->slug}", [], [], [], [
+        $response = $this->call('POST', "/api/webhooks/{$endpoint->slug}", [], [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_X_WEBHOOK_SIGNATURE' => "sha256={$signature}",
         ], $body);
@@ -62,7 +62,7 @@ class WebhookProxyTest extends TestCase
             'secret' => 's3cr3t',
         ]);
 
-        $this->call('POST', "/webhooks/{$endpoint->slug}", [], [], [], [
+        $this->call('POST', "/api/webhooks/{$endpoint->slug}", [], [], [], [
             'HTTP_X_WEBHOOK_SIGNATURE' => 'sha256=deadbeef',
         ], '{}')->assertStatus(401);
 
@@ -71,7 +71,7 @@ class WebhookProxyTest extends TestCase
 
     public function test_unknown_slug_returns_404(): void
     {
-        $this->postJson('/webhooks/does-not-exist', [])->assertStatus(404);
+        $this->postJson('/api/webhooks/does-not-exist', [])->assertStatus(404);
     }
 
     public function test_forward_job_posts_body_and_marks_attempt(): void

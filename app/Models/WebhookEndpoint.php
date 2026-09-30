@@ -44,6 +44,6 @@ class WebhookEndpoint extends Model
 
     public function inboundUrl(): string
     {
-        return url("/webhooks/{$this->slug}");
+        return url("/api/webhooks/{$this->slug}");
     }
 }

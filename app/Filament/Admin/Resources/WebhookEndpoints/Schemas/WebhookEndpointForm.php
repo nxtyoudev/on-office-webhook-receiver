@@ -17,7 +17,7 @@ class WebhookEndpointForm
                     ->required()
                     ->maxLength(255),
                 TextInput::make('slug')
-                    ->helperText('Leave blank to auto-generate. Inbound URL: /webhooks/{slug}')
+                    ->helperText('Leave blank to auto-generate. Inbound URL: /api/webhooks/{slug}')
                     ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->placeholder(fn () => Str::random(24)),

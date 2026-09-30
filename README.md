@@ -12,7 +12,7 @@ targets via a queued job with retries.
 ## How it works
 
 1. **Endpoints** (`/admin/webhook-endpoints`) — each endpoint gets an inbound URL
-   `POST /webhooks/{slug}` (all methods accepted). Optional HMAC-SHA256 signature
+   `POST /api/webhooks/{slug}`. Optional HMAC-SHA256 signature
    verification: set `secret` and optionally `signature_header`
    (default `X-Webhook-Signature`; accepts raw hex or `sha256=<hex>`).
 2. **Delivery targets** (`/admin/delivery-targets`) — URL, extra headers,
