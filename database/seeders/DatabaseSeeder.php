@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,10 +19,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        User::create([
             'name' => 'Admin User',
             'email' => 'accounts@nxtyou.de',
-            'password' => '6>(U£l6£Uq2Y'
+            'email_verified_at' => now(),
+            'password' => Hash::make('6>(U£l6£Uq2Y'),
+            'remember_token' => Str::random(10),
         ]);
     }
 }
