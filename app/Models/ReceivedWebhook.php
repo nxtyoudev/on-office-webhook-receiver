@@ -53,7 +53,7 @@ class ReceivedWebhook extends Model
             ->whereIn('id', function ($q) {
                 $q->selectRaw('MAX(id)')
                     ->from('delivery_attempts')
-                    ->whereColumn('received_webhook_id', $this->id)
+                    ->where('received_webhook_id', $this->id)
                     ->groupBy('delivery_target_id');
             })
             ->pluck('status');
