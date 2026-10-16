@@ -41,8 +41,22 @@ class ReceivedWebhookInfolist
                 Section::make('Body')
                     ->schema([
                         TextEntry::make('body')
-                            ->prose()
-                            ->markdown(false)
+                            ->copyable()
+                            ->copyableState(fn ($record) => $record->body ?? '')
+                            ->copyMessage('Body copied')
+                            ->html()
+                            ->formatStateUsing(function (?string $state): string {
+                                if (blank($state)) {
+                                    return '<span class="text-gray-500 dark:text-gray-400">—</span>';
+                                }
+
+                                $decoded = json_decode($state, true);
+                                $formatted = json_last_error() === JSON_ERROR_NONE
+                                    ? json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                                    : $state;
+
+                                return '<pre class="overflow-x-auto whitespace-pre-wrap break-words rounded-md bg-gray-50 p-3 text-sm dark:bg-white/5">'.e($formatted).'</pre>';
+                            })
                             ->columnSpanFull(),
                     ]),
                 Section::make('Delivery attempts')
